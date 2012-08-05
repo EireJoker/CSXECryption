@@ -5,8 +5,6 @@ namespace CSXECryption.BackEnd
 {
     internal class Decryt
     {
-        private String[] breakMsg;
-
         public static void breakDownMsg(String msgFull)
         {
             String[] splitNumbers = msgFull.Split('.');
@@ -15,17 +13,21 @@ namespace CSXECryption.BackEnd
                 Console.WriteLine(value);
             }
 
-            int[] test = addNumbers(splitNumbers);
-            foreach (int num in test)
+            int[] numbers = addNumbers(splitNumbers);
+            foreach (int num in numbers)
             {
                 Console.WriteLine(num);
             }
-        }
 
-        private int j = 0;
+            int[] keys = mostOccur(numbers);
+
+            decrytMessage(keys, numbers);
+        }
 
         public static int[] addNumbers(String[] splitNumbers)
         {
+
+            Console.WriteLine("Numbers Added Together Here");
             int[] numbers;
 
             numbers = new int[splitNumbers.Length / 3];
@@ -44,14 +46,8 @@ namespace CSXECryption.BackEnd
                     numbers[j] = (int.Parse(splitNumbers[i]) + int.Parse(splitNumbers[i - 1]) + int.Parse(splitNumbers[i - 2]));
                     j++;
                 }
-                else
-                {
-                    Console.WriteLine("no");
-                }
-                Console.WriteLine(runs);
             }
 
-            mostOccur(numbers);
             return numbers;
         }
 
@@ -75,7 +71,7 @@ namespace CSXECryption.BackEnd
 
             // Get Number of modes
             int modes = 0;
-             foreach (var mode in query)
+            foreach (var mode in query)
             {
                 Console.WriteLine("HERE");
                 Console.WriteLine(mode);
@@ -101,11 +97,29 @@ namespace CSXECryption.BackEnd
             return keys;
         }
 
-        private static String msgin()
+        public static String decrytMessage(int[] keys, int[] numbers)
         {
-            String returnString = "";
+            Console.WriteLine("Mess Stuff Here");
+            String Message = "";
 
-            return returnString;
+            for (int i = 0; i < keys.Length; i++)
+            {
+                for (int j = 0; j < numbers.Length; j++)
+                {
+                    Message = Message + (decToAscii(numbers[j] - (keys[i]-32)));
+                }
+                Console.WriteLine(Message);
+                Message = "";
+            }
+
+            return Message;
+        }
+
+        public static char decToAscii(int dec)
+        {
+            char newChar = (char)dec;
+
+            return newChar;
         }
     }
 }
